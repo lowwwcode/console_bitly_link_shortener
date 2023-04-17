@@ -3,63 +3,55 @@ from urllib.parse import urlparse
 import requests
 from dotenv import load_dotenv
 
-load_dotenv()
-
 
 def shorten_link(token, url):
     headers = {
         'Authorization': f'Bearer {token}',
-        'Content-Type': 'application/json',
     }
     response = requests.post(
         'https://api-ssl.bitly.com/v4/shorten',
         headers=headers,
-        data=f'{{"long_url": "{url}"}}')
+        json={'long_url': url})
     response.raise_for_status()
     return response.json()['link']
 
 
-def count_clicks(token: str, bitlink):
+def get_count_clicks(token: str, url):
+    parsed_url = urlparse(url)
     headers = {
         'Authorization': f'Bearer {token}',
-        'Content-Type': 'application/json',
     }
     params = (
         ('unit', 'day'),
         ('units', '-1'),
     )
-    response = requests.get(f'https://api-ssl.bitly.com/v4/bitlinks/{bitlink.netloc}{bitlink.path}/clicks/summary',
+    response = requests.get(f'https://api-ssl.bitly.com/v4/bitlinks/{parsed_url.netloc}{parsed_url.path}/clicks/summary',
                             headers=headers,
                             params=params)
     response.raise_for_status()
-    return response.json()
+    return response.json()["total_clicks"]
 
 
-def is_bitlink(token, bitlink):
+def is_bitlink(token, url):
+    parsed_url = urlparse(url)
     headers = {
         'Authorization': f'Bearer {token}',
         'Content-Type': 'application/json',
     }
-    params = (
-        ('unit', 'day'),
-        ('units', '-1'),
-    )
-    response = requests.get(f'https://api-ssl.bitly.com/v4/bitlinks/{bitlink.netloc}{bitlink.path}/clicks/summary',
-                            headers=headers,
-                            params=params)
-    if response.ok:
-        return True
-    return False
+
+    response = requests.get(f'https://api-ssl.bitly.com/v4/bitlinks/{parsed_url.netloc}{parsed_url.path}',
+                            headers=headers)
+    return response.ok
 
 
 if __name__ == '__main__':
+    load_dotenv()
     bitly_token = os.getenv('BITLY_TOKEN')
     user_input = input('Введите ссылку для укорачивания в формате - "https://google.com": ')
-    parsed_url = urlparse(user_input)
 
-    if is_bitlink(bitly_token, parsed_url):
+    if is_bitlink(bitly_token, user_input):
         try:
-            print(f'Всего кликов: {count_clicks(bitly_token, parsed_url)["total_clicks"]}')
+            print(f'Всего кликов: {get_count_clicks(bitly_token, user_input)}')
         except requests.exceptions.HTTPError:
             print('Этот битлинк не зарегистрирован в системе, или вы ввели некорректный адрес ссылки.')
     else:
