@@ -68,7 +68,7 @@ if __name__ == '__main__':
             print('Этот битлинк не зарегистрирован в системе, или вы ввели некорректный адрес ссылки.')
     else:
         try:
-            print(f'Битлинк, {shorten_link(bitly_token, args_link.link)}')
+            print(f'Битлинк - {shorten_link(bitly_token, args_link.link)}')
         except requests.exceptions.HTTPError:
             print('Вы ввели некорректный формат ссылки или такого адреса не существует, '
                   'ссылка должна начинаться с "https://"')

@@ -28,17 +28,15 @@ pip install -r requirements.txt
 Для получения короткой ссылки введите в командной строке находясь в папке проекта:
 
 ```shell
-python main.py
+python main.py https://google.com/
 ```
 Пример корректной работы скрипта:
 ```
-(venv) ➜  console_bitly_link_shortener: python main.py
-Введите ссылку для укорачивания в формате - "https://google.com": https://google.com
+(venv) ➜  console_bitly_link_shortener git:(main) ✗ python main.py https://google.com
 Битлинк, https://bit.ly/3KfSRZY
 ```
 Пример выдачи общего количества кликов по битлинку за все время:
 ```
-(venv) ➜  console_bitly_link_shortener: python main.py
-Введите ссылку для укорачивания в формате - "https://google.com": https://bit.ly/3KfSRZY
+(venv) ➜  console_bitly_link_shortener git:(main) ✗ python main.py https://bit.ly/3KfSRZY
 Всего кликов: 2
 ```
