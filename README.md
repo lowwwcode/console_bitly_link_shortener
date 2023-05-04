@@ -8,7 +8,14 @@ Bitly. Так же есть возможность посмотреть обще
 
 ---
 
-Для начала необходимо создать новое виртуальное окружение и установить зависимости командой:
+Для начала необходимо создать новое виртуальное окружение:
+
+```shell-session
+python -m venv </path/to/new/virtual/environment>
+source </path/to/new/virtual/environment>/bin/activate
+```
+
+Затем установить зависимости командой:
 
 ```shell
 pip install -r requirements.txt
