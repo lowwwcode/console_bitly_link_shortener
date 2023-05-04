@@ -55,7 +55,7 @@ def is_bitlink(token, url):
 if __name__ == '__main__':
 
     load_dotenv()
-    bitly_token = os.getenv('BITLY_TOKEN')
+    bitly_token = os.environ['BITLY_TOKEN']
 
     parser = argparse.ArgumentParser()
     parser.add_argument("link", help="Link to shorten or bitlink", type=str)
@@ -72,3 +72,4 @@ if __name__ == '__main__':
         except requests.exceptions.HTTPError:
             print('Вы ввели некорректный формат ссылки или такого адреса не существует, '
                   'ссылка должна начинаться с "https://"')
+
